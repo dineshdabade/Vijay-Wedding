@@ -57,7 +57,7 @@ h1,h2,h3{font-family:"Cormorant Garamond",serif;font-weight:500}a{text-decoratio
 </style>
 </head>
 <body>
-<audio id="bgMusic" src="vijay-wedding-music.mp3" loop preload="auto"></audio><source src="background-music.mp3" type="audio/mpeg"></audio>
+<audio id="bgMusic" src="vijay-wedding-music.mp3" loop preload="auto"></audio>
 <button class="music-toggle" id="musicToggle" aria-label="Toggle background music">♫</button>
 
 <div class="entry" id="entry">
@@ -186,61 +186,83 @@ h1,h2,h3{font-family:"Cormorant Garamond",serif;font-weight:500}a{text-decoratio
 </div>
 
 <script>
-const entry = document.getElementById("entry");
-const enter = document.getElementById("enter");
-const bgMusic = document.getElementById("bgMusic");
+(function () {
+  "use strict";
 
-function openInvitation(){
-  entry.classList.add("hide");
-  document.body.style.overflow = "";
-  if (bgMusic) {
-    bgMusic.volume = 0.45;
-    const p = bgMusic.play();
-    if (p) p.catch(function(){});
+  // Entry screen + background music
+  const entry = document.getElementById("entry");
+  const enterButton = document.getElementById("enter");
+  const music = document.getElementById("bgMusic");
+  const musicToggle = document.getElementById("musicToggle");
+
+  function startMusic() {
+    if (!music) return;
+    music.volume = 0.45;
+    const promise = music.play();
+    if (promise && typeof promise.then === "function") {
+      promise.then(function () {
+        if (musicToggle) {
+          musicToggle.classList.add("playing");
+          musicToggle.textContent = "♫";
+        }
+      }).catch(function () {
+        // Browser may block audio; invitation still opens normally.
+      });
+    }
   }
-}
 
-enter.addEventListener("click", openInvitation);
-enter.addEventListener("touchend", function(e){
-  e.preventDefault();
-  openInvitation();
-}, {passive:false});
-  const music=document.getElementById("bgMusic");
-  if(music){ music.volume=0.45; music.play().catch(()=>{}); }
-});
-const musicToggle=document.getElementById("musicToggle");
-musicToggle.addEventListener("click",()=>{
-  if(bgMusic.paused){ bgMusic.play().catch(()=>{}); musicToggle.textContent="♫"; }
-  else { bgMusic.pause(); musicToggle.textContent="🔇"; }
-});
-
-const music=document.getElementById("bgMusic");
-const musicToggle=document.getElementById("musicToggle");
-let musicStarted=false;
-function startMusic(){
-  music.play().then(()=>{musicStarted=true;musicToggle.classList.add("playing");musicToggle.textContent="♫"}).catch(()=>{});
-}
-enter.addEventListener("click",startMusic);
-musicToggle.addEventListener("click",()=>{if(music.paused){startMusic()}else{music.pause();musicToggle.classList.remove("playing");}});
-
-/* Set the confirmed wedding date/time here */
-const weddingDate=new Date("2026-12-15T11:45:00+05:30");
-
-function updateCountdown(){
-  const d=weddingDate-Date.now();
-  if(d<=0){
-    ["days","hours","minutes","seconds"].forEach(id=>document.getElementById(id).textContent="00");
-    document.getElementById("eventDate").textContent="आज आपल्या विवाहाचा मंगल दिवस आहे! ♥";
-    return;
+  function openInvitation(event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    if (entry) entry.classList.add("hide");
+    startMusic();
   }
-  const s=Math.floor(d/1000);
-  document.getElementById("days").textContent=Math.floor(s/86400);
-  document.getElementById("hours").textContent=String(Math.floor(s%86400/3600)).padStart(2,"0");
-  document.getElementById("minutes").textContent=String(Math.floor(s%3600/60)).padStart(2,"0");
-  document.getElementById("seconds").textContent=String(s%60).padStart(2,"0");
-  document.getElementById("eventDate").textContent=weddingDate.toLocaleDateString("en-IN",{day:"numeric",month:"long",year:"numeric",timeZone:"Asia/Kolkata"})+" · विवाह सोहळा";
-}
-updateCountdown();setInterval(updateCountdown,1000);
+
+  if (enterButton) {
+    enterButton.addEventListener("click", openInvitation);
+    enterButton.addEventListener("touchend", openInvitation, { passive: false });
+  }
+
+  if (musicToggle) {
+    musicToggle.addEventListener("click", function () {
+      if (!music) return;
+      if (music.paused) {
+        startMusic();
+      } else {
+        music.pause();
+        musicToggle.classList.remove("playing");
+        musicToggle.textContent = "🔇";
+      }
+    });
+  }
+
+  // Wedding countdown — Tuesday, 15 December 2026 at 11:45 AM IST
+  const weddingDate = new Date("2026-12-15T11:45:00+05:30");
+  const days = document.getElementById("days");
+  const hours = document.getElementById("hours");
+  const minutes = document.getElementById("minutes");
+  const seconds = document.getElementById("seconds");
+  const eventDate = document.getElementById("eventDate");
+
+  function updateCountdown() {
+    const diff = weddingDate.getTime() - Date.now();
+    if (diff <= 0) {
+      [days, hours, minutes, seconds].forEach(function (el) { if (el) el.textContent = "00"; });
+      if (eventDate) eventDate.textContent = "आज आपल्या विवाहाचा मंगल दिवस आहे! ♥";
+      return;
+    }
+    const total = Math.floor(diff / 1000);
+    if (days) days.textContent = String(Math.floor(total / 86400));
+    if (hours) hours.textContent = String(Math.floor((total % 86400) / 3600)).padStart(2, "0");
+    if (minutes) minutes.textContent = String(Math.floor((total % 3600) / 60)).padStart(2, "0");
+    if (seconds) seconds.textContent = String(total % 60).padStart(2, "0");
+    if (eventDate) eventDate.textContent = "15 December 2026 · विवाह सोहळा";
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+})();
 </script>
 </body>
 </html>
