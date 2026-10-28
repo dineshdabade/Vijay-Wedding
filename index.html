@@ -12,7 +12,7 @@
 h1,h2,h3{font-family:"Cormorant Garamond",serif;font-weight:500}a{text-decoration:none}.marathi{font-family:"Noto Serif Devanagari",serif}
 
 /* ENTRY */
-.entry{position:fixed;inset:0;z-index:9999;pointer-events:auto;background:var(--maroon);color:#fff;display:grid;place-items:center;text-align:center;transition:.7s ease}.entry.hide{opacity:0;visibility:hidden;pointer-events:none}.entry-inner{padding:30px}.entry-symbol{font-size:42px;color:#d9bd85}.entry h1{font-size:70px;line-height:.9;margin:18px 0 10px}.entry p{font-family:"Noto Serif Devanagari";font-size:18px}.enter{margin-top:25px;border:1px solid #d9bd85;background:transparent;color:#fff;padding:13px 30px;cursor:pointer;font:500 13px "DM Sans";letter-spacing:1px}
+.entry{position:fixed;inset:0;z-index:100;background:var(--maroon);color:#fff;display:grid;place-items:center;text-align:center;transition:.7s ease}.entry.hide{opacity:0;visibility:hidden;pointer-events:none}.entry-inner{padding:30px}.entry-symbol{font-size:42px;color:#d9bd85}.entry h1{font-size:70px;line-height:.9;margin:18px 0 10px}.entry p{font-family:"Noto Serif Devanagari";font-size:18px}.enter{margin-top:25px;border:1px solid #d9bd85;background:transparent;color:#fff;padding:13px 30px;cursor:pointer;font:500 13px "DM Sans";letter-spacing:1px}
 
 /* MUSIC */
 .music-toggle{position:fixed;right:18px;bottom:18px;z-index:50;width:48px;height:48px;border-radius:50%;border:1px solid #b18b50;background:#612f35;color:#fff;cursor:pointer;box-shadow:0 8px 22px #0003;font-size:17px}.music-toggle.playing{animation:spin 4s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
@@ -47,20 +47,29 @@ h1,h2,h3{font-family:"Cormorant Garamond",serif;font-weight:500}a{text-decoratio
 /* FOOTER */
 .footer{padding:65px 20px;background:#211b1a;color:#eee5da;text-align:center}.footer h2{font-size:45px;margin:0;color:#d9bd85}.footer p{font-family:"Noto Serif Devanagari";line-height:1.8}.footer small{color:#ad9a83}
 
+/* CELEBRATION CONFETTI */
+.confetti-piece{position:fixed;top:-18px;left:0;width:9px;height:15px;z-index:9999;pointer-events:none;opacity:1;will-change:transform,opacity;border-radius:2px;animation:confettiFall var(--fall) cubic-bezier(.12,.72,.2,1) forwards;}
+@keyframes confettiFall{0%{transform:translate3d(0,-20px,0) rotate(0deg);opacity:1}75%{opacity:1}100%{transform:translate3d(var(--x),var(--y),0) rotate(var(--r));opacity:0}}
 /* MOBILE */
 @media(max-width:760px){.nav{padding:0 15px}.navlinks{display:none}.brand{font-size:24px}.hero{padding:70px 18px 60px;min-height:690px}.hero:before{inset:18px}.hero h1{font-size:70px}.intro,.events,.venue,.rsvp{padding:62px 18px}.section-head h2,.venue h2,.rsvp h2{font-size:42px}.event-grid{grid-template-columns:1fr}.event:nth-child(3){grid-column:auto;max-width:none}.photo,.photo img{min-height:470px;height:470px}.photo-text h2{font-size:48px}.venue-card{grid-template-columns:1fr}.venue-image{min-height:300px}.venue-info{min-height:300px;padding:30px}.countdown{padding:65px 12px}.countdown h2{font-size:42px}.timer{gap:0}.time{padding:20px 3px}.time strong{font-size:38px}.time span{font-size:9px;letter-spacing:1px}}
 @media(max-width:430px){.hero h1{font-size:58px}.couple{width:90vw}.timer strong{font-size:31px}}
 </style>
 
+<style>
+#musicToggle{position:fixed;right:18px;bottom:18px;z-index:100;width:48px;height:48px;border-radius:50%;border:1px solid #b18b50;background:#612f35;color:#fff;font-size:20px;cursor:pointer;box-shadow:0 6px 18px #0002}
+</style>
 </head>
 <body>
+<audio id="bgMusic" loop preload="auto"><source src="vijay-wedding-music.mp3" type="audio/mpeg"></audio>
+<button class="music-toggle" id="musicToggle" aria-label="Toggle background music">♫</button>
+
 <div class="entry" id="entry">
   <div class="entry-inner">
     <div class="entry-symbol">✦</div>
     <div class="eyebrow" style="color:#d9bd85">A Celebration of Love</div>
     <h1>विजय<br>&amp;<br>साक्षी</h1>
     <p>एका सुंदर नव्या प्रवासाची सुरुवात...</p>
-    <button type="button" class="enter" id="enter">ENTER INVITATION · आमंत्रण पहा</button>
+    <button class="enter" id="enter">ENTER INVITATION · आमंत्रण पहा</button>
   </div>
 </div>
 
@@ -104,20 +113,22 @@ h1,h2,h3{font-family:"Cormorant Garamond",serif;font-weight:500}a{text-decoratio
       <div class="event-no">01 · CELEBRATION</div>
       <h3>Sangeet</h3>
       <div class="marathi">संगीत समारंभ</div>
-      <p>सोमवार १४/१२/२०२६ · रात्री ०७:०० वा.</p>
-      <div class="date">विवाहस्थळी</div>
+      <p>Join us as we begin our new journey together, surrounded by family, friends and blessings.</p>
+      <div class="date">सोमवार १४/१२/२०२६ · रात्री ०७:०० वा. · (विवाहस्थळी)</div>
     </article>
     <article class="event">
       <div class="event-no">02 · CEREMONY</div>
       <h3>Wedding</h3>
       <div class="marathi">शुभ विवाह</div>
-      <p>मंगळवार दि. १५/१२/२०२६ · सकाळी ११ वा. ४५ मि.</p>
-      <div class="date">श्री तिरुपती सेलिब्रेशन, पिंपरी फाटा, अमरावती.</div>
+      <p>A day filled with love, laughter, traditions and memories we will cherish forever.</p>
+      <div class="date">मंगळवार दि. १५/१२/२०२६ · सकाळी ११ वा. ४५ मि.</div>
     </article>
-  </div>
-  <div class="event-note">
-    <p>A day filled with love, laughter, traditions and memories we will cherish forever.</p>
-    <p class="marathi">Your presence is the most beautiful part of our celebration.</p>
+    <article class="event">
+      <div class="event-no">03 · FAMILY</div>
+      <h3>Be With Us</h3>
+      <div class="marathi">आपण सहकुटुंब सहपरिवार जरूर या</div>
+      <p>Your presence is the most beautiful part of our celebration.</p>
+    </article>
   </div>
 </section>
 
@@ -132,7 +143,6 @@ h1,h2,h3{font-family:"Cormorant Garamond",serif;font-weight:500}a{text-decoratio
 <section class="venue" id="venue">
   <div class="eyebrow">The Venue · विवाह स्थळ</div>
   <h2>Where We Celebrate</h2>
-  <p class="marathi">श्री तिरुपती सेलिब्रेशन, पिंपरी फाटा, अमरावती.</p>
   <div class="venue-card">
     <div class="venue-image">
       <img src="https://static.wixstatic.com/media/818d23_6662ed3f0b5f46cca9f0864d379deb20~mv2.jpg/v1/fill/w_1024,h_1024,al_c,q_85,enc_auto/818d23_6662ed3f0b5f46cca9f0864d379deb20~mv2.jpg" alt="Wedding venue">
@@ -141,7 +151,7 @@ h1,h2,h3{font-family:"Cormorant Garamond",serif;font-weight:500}a{text-decoratio
       <div class="eyebrow">विवाह स्थळ</div>
       <h3>Join Us Here</h3>
       <div class="event-details marathi">
-        <div><b>स्थळ</b><br>श्री तिरुपती सेलिब्रेशन,<br>पिंपरी फाटा, अमरावती.</div>
+        <div><b>स्थळ</b><br>श्री तिरुपती सेलिब्रेशन, पिंपरी फाटा, अमरावती.</div>
       </div>
       <a class="map" href="https://maps.app.goo.gl/Pb4Lt8VswTbBYcNz8?g_st=ac" target="_blank" rel="noopener">📍 Get Directions · मार्गदर्शन</a>
     </div>
@@ -176,83 +186,95 @@ h1,h2,h3{font-family:"Cormorant Garamond",serif;font-weight:500}a{text-decoratio
 </div>
 
 <script>
-(function () {
-  "use strict";
+const entry = document.getElementById("entry");
+const enter = document.getElementById("enter");
+const bgMusic = document.getElementById("bgMusic");
+const musicToggle = document.getElementById("musicToggle");
 
-  // Entry screen + background music
-  const entry = document.getElementById("entry");
-  const enterButton = document.getElementById("enter");
-  const music = document.getElementById("bgMusic");
-  const musicToggle = document.getElementById("musicToggle");
-
-  function startMusic() {
-    if (!music) return;
-    music.volume = 0.45;
-    const promise = music.play();
-    if (promise && typeof promise.then === "function") {
-      promise.then(function () {
-        if (musicToggle) {
-          musicToggle.classList.add("playing");
-          musicToggle.textContent = "♫";
-        }
-      }).catch(function () {
-        // Browser may block audio; invitation still opens normally.
-      });
+function startMusic(){
+  if (!bgMusic) return;
+  bgMusic.volume = 0.45;
+  bgMusic.play().then(()=>{
+    if (musicToggle) {
+      musicToggle.classList.add("playing");
+      musicToggle.textContent = "♫";
     }
-  }
+  }).catch(()=>{});
+}
 
-  function openInvitation(event) {
-    if (event) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
+if (enter) {
+  enter.addEventListener("click", (event) => {
+    event.preventDefault();
     if (entry) entry.classList.add("hide");
     startMusic();
-  }
+  }, {once:true});
+}
 
-  if (enterButton) {
-    enterButton.addEventListener("click", openInvitation);
-    enterButton.addEventListener("touchend", openInvitation, { passive: false });
-  }
-
-  if (musicToggle) {
-    musicToggle.addEventListener("click", function () {
-      if (!music) return;
-      if (music.paused) {
-        startMusic();
-      } else {
-        music.pause();
-        musicToggle.classList.remove("playing");
-        musicToggle.textContent = "🔇";
-      }
-    });
-  }
-
-  // Wedding countdown — Tuesday, 15 December 2026 at 11:45 AM IST
-  const weddingDate = new Date("2026-12-15T11:45:00+05:30");
-  const days = document.getElementById("days");
-  const hours = document.getElementById("hours");
-  const minutes = document.getElementById("minutes");
-  const seconds = document.getElementById("seconds");
-  const eventDate = document.getElementById("eventDate");
-
-  function updateCountdown() {
-    const diff = weddingDate.getTime() - Date.now();
-    if (diff <= 0) {
-      [days, hours, minutes, seconds].forEach(function (el) { if (el) el.textContent = "00"; });
-      if (eventDate) eventDate.textContent = "आज आपल्या विवाहाचा मंगल दिवस आहे! ♥";
-      return;
+if (musicToggle) {
+  musicToggle.addEventListener("click", () => {
+    if (!bgMusic) return;
+    if (bgMusic.paused) {
+      startMusic();
+    } else {
+      bgMusic.pause();
+      musicToggle.classList.remove("playing");
+      musicToggle.textContent = "♫";
     }
-    const total = Math.floor(diff / 1000);
-    if (days) days.textContent = String(Math.floor(total / 86400));
-    if (hours) hours.textContent = String(Math.floor((total % 86400) / 3600)).padStart(2, "0");
-    if (minutes) minutes.textContent = String(Math.floor((total % 3600) / 60)).padStart(2, "0");
-    if (seconds) seconds.textContent = String(total % 60).padStart(2, "0");
-    if (eventDate) eventDate.textContent = "15 December 2026 · विवाह सोहळा";
+  });
+}
+
+// Celebration confetti — fires when guests discover the celebration or RSVP.
+function launchConfetti(){
+  const count = 95;
+  const pieces = [];
+  const shapes = ['▰','◆','●','✦'];
+  for(let i=0;i<count;i++){
+    const el=document.createElement('span');
+    el.className='confetti-piece';
+    el.textContent=shapes[Math.floor(Math.random()*shapes.length)];
+    el.style.left=(8+Math.random()*84)+'vw';
+    el.style.setProperty('--x',((Math.random()-.5)*240)+'px');
+    el.style.setProperty('--y',(55+Math.random()*75)+'vh');
+    el.style.setProperty('--r',((Math.random()-.5)*900)+'deg');
+    el.style.setProperty('--fall',(1.4+Math.random()*1.5)+'s');
+    el.style.fontSize=(7+Math.random()*9)+'px';
+    el.style.opacity=(.75+Math.random()*.25).toFixed(2);
+    document.body.appendChild(el);
+    pieces.push(el);
   }
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
-})();
+  setTimeout(()=>pieces.forEach(el=>el.remove()),3200);
+}
+
+// Keep the normal navigation behavior; confetti is only a visual effect.
+document.querySelectorAll('.cta, .navbtn, .wa').forEach(btn=>{
+  btn.addEventListener('click', launchConfetti);
+});
+
+// Wedding countdown — Tuesday, 15 December 2026 at 11:45 AM IST
+const weddingDate = new Date("2026-12-15T11:45:00+05:30").getTime();
+function updateCountdown(){
+  const diff = weddingDate - Date.now();
+  if (diff <= 0) {
+    ["days","hours","minutes","seconds"].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = "0";
+    });
+    const dateEl = document.getElementById("eventDate");
+    if (dateEl) dateEl.textContent = "आज आपल्या विवाहाचा मंगल दिवस आहे! ♥";
+    return;
+  }
+  const days = Math.floor(diff / 86400000);
+  const hours = Math.floor((diff % 86400000) / 3600000);
+  const minutes = Math.floor((diff % 3600000) / 60000);
+  const seconds = Math.floor((diff % 60000) / 1000);
+  const vals = {days, hours:String(hours).padStart(2,"0"), minutes:String(minutes).padStart(2,"0"), seconds:String(seconds).padStart(2,"0")};
+  Object.entries(vals).forEach(([id,val])=>{
+    const el=document.getElementById(id);
+    if(el) el.textContent=val;
+  });
+}
+updateCountdown();
+setInterval(updateCountdown,1000);
 </script>
 </body>
 </html>
